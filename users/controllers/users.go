@@ -6,6 +6,7 @@ import (
 
 	"github.com/DiptoChakrabarty/go-mvcs/users/services"
 	"github.com/DiptoChakrabarty/go-mvcs/users/types/users"
+	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,11 +14,16 @@ func CreateUser(ctx *gin.Context) {
 	var usr users.User
 	err := ctx.ShouldBindJSON(&usr)
 	if err != nil {
-		return
+		restErr := resterrors.RestErr{
+			Message: "Invalid Values Given",
+			Status:  http.StatusBadRequest,
+			Error:   "bad_request",
+		}
+		ctx.JSON(restErr.Status, restErr)
 	}
-	result, err := services.AddUser(usr)
+	result, saveErr := services.AddUser(usr)
 	if err != nil {
-		return
+		ctx.JSON(saveErr.Status, saveErr)
 	}
 	ctx.JSON(http.StatusCreated, result)
 }
