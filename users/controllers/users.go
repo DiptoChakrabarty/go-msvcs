@@ -14,11 +14,7 @@ func CreateUser(ctx *gin.Context) {
 	var usr users.User
 	err := ctx.ShouldBindJSON(&usr)
 	if err != nil {
-		restErr := resterrors.RestErr{
-			Message: "Invalid Values Given",
-			Status:  http.StatusBadRequest,
-			Error:   "bad_request",
-		}
+		restErr := resterrors.BadRequestError("Invlaid Values Provided")
 		ctx.JSON(restErr.Status, restErr)
 	}
 	result, saveErr := services.AddUser(usr)
