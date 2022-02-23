@@ -12,8 +12,6 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-var Client = NewModelDB()
-
 type Model struct {
 	DBConn *gorm.DB
 }
@@ -44,10 +42,25 @@ func NewModelDB() *Model {
 }
 
 func (db Model) Save(usr User) *resterrors.RestErr {
-	db.DBConn.Model(&User{}).Save(&usr)
-	return nil
+	err := db.DBConn.Model(&User{}).Save(&usr)
+	return err
 }
 
 func (db Model) Find(id uint64) (*User, *resterrors.RestErr) {
-	return nil, nil
+	var usr User
+	err := db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, id)
+	if gorm.IsRecordNotFoundError(err) {
+		return nil, resterrors.BadRequestError("user not found")
+	}
+	return &usr, nil
+}
+
+func (db Model) Update(usr User) *resterrors.RestErr {
+	err := db.DBConn.Model(&User{}).Save(&usr)
+	return err
+}
+
+func (db Model) Delete(usr User) *resterrors.RestErr {
+	err := db.DBConn.Model(&User{}).Delete(&usr)
+	return err
 }

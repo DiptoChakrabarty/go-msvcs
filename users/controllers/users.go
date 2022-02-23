@@ -10,7 +10,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateUser(ctx *gin.Context) {
+type UserController struct {
+	svc services.UserService
+}
+
+func (user *UserController) CreateUser(ctx *gin.Context) {
 	var usr users.User
 	err := ctx.ShouldBindJSON(&usr)
 	if err != nil {
@@ -24,7 +28,7 @@ func CreateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, result)
 }
 
-func GetUser(ctx *gin.Context) {
+func (user *UserController) GetUser(ctx *gin.Context) {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	result, err := services.GetUser(id)
 	if err != nil {
@@ -33,7 +37,7 @@ func GetUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, result)
 }
 
-func DeleteUser(ctx *gin.Context) {
+func (user *UserController) DeleteUser(ctx *gin.Context) {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	result, err := services.DeleteUser(id)
 	if err != nil {
