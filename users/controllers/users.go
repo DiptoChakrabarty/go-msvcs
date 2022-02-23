@@ -21,7 +21,7 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 		restErr := resterrors.BadRequestError("Invlaid Values Provided")
 		ctx.JSON(restErr.Status, restErr)
 	}
-	result, saveErr := services.AddUser(usr)
+	result, saveErr := user.svc.AddUser(usr)
 	if err != nil {
 		ctx.JSON(saveErr.Status, saveErr)
 	}
@@ -30,16 +30,30 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 
 func (user *UserController) GetUser(ctx *gin.Context) {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 0, 0)
-	result, err := services.GetUser(id)
+	result, err := user.svc.GetUser(id)
 	if err != nil {
 		return
 	}
 	ctx.JSON(http.StatusCreated, result)
 }
 
+func (user *UserController) UpdateUser(ctx *gin.Context) {
+	var usr users.User
+	err := ctx.ShouldBindJSON(&usr)
+	if err != nil {
+		restErr := resterrors.BadRequestError("Invlaid Values Provided")
+		ctx.JSON(restErr.Status, restErr)
+	}
+	result, saveErr := user.svc.UpdateUser(usr)
+	if err != nil {
+		ctx.JSON(saveErr.Status, saveErr)
+	}
+	ctx.JSON(http.StatusCreated, result)
+}
+
 func (user *UserController) DeleteUser(ctx *gin.Context) {
 	id, _ := strconv.ParseUint(ctx.Param("id"), 0, 0)
-	result, err := services.DeleteUser(id)
+	result, err := user.svc.DeleteUser(id)
 	if err != nil {
 		return
 	}

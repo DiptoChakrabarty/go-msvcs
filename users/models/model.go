@@ -60,7 +60,7 @@ func (db Model) Update(usr User) *resterrors.RestErr {
 	return err
 }
 
-func (db Model) Delete(usr User) *resterrors.RestErr {
-	err := db.DBConn.Model(&User{}).Delete(&usr)
+func (db Model) Delete(id uint64) *resterrors.RestErr {
+	err := db.DBConn.Model(&User{}).Delete(&User{}, id)
 	return err
 }
