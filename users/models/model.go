@@ -12,6 +12,13 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
+type UserModel interface {
+	Save(usr User) *resterrors.RestErr
+	Find(id uint64) (*User, *resterrors.RestErr)
+	Update(usr User) *resterrors.RestErr
+	Delete(id uint64) *resterrors.RestErr
+}
+
 type Model struct {
 	DBConn *gorm.DB
 }
@@ -29,7 +36,7 @@ func getDB() (db *gorm.DB, err error) {
 	return gorm.Open(db_type, db_connection_string)
 }
 
-func NewModelDB() *Model {
+func NewModelDB() UserModel {
 	db, err := getDB()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -60,7 +67,7 @@ func (db Model) Update(usr User) *resterrors.RestErr {
 	return err
 }
 
-func (db Model) Delete(usr User) *resterrors.RestErr {
-	err := db.DBConn.Model(&User{}).Delete(&usr)
+func (db Model) Delete(id uint64) *resterrors.RestErr {
+	err := db.DBConn.Model(&User{}).Delete(&User{}, id)
 	return err
 }
