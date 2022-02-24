@@ -16,6 +16,13 @@ type Model struct {
 	DBConn *gorm.DB
 }
 
+type UserModel interface {
+	Save(usr User) *resterrors.RestErr
+	Find(id uint64) (*User, *resterrors.RestErr)
+	Update(usr User) *resterrors.RestErr
+	Delete(id uint64) *resterrors.RestErr
+}
+
 func getEnv(key, defaultValue string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
@@ -29,7 +36,7 @@ func getDB() (db *gorm.DB, err error) {
 	return gorm.Open(db_type, db_connection_string)
 }
 
-func NewModelDB() Model {
+func NewModelDB() UserModel {
 	db, err := getDB()
 	if err != nil {
 		fmt.Println(err.Error())

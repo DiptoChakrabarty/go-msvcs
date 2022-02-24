@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	router                    = gin.New()
-	UserDataBase models.Model = models.NewModelDB()
+	router                        = gin.New()
+	UserDataBase models.UserModel = models.NewModelDB()
 
 	UserService services.UserService = services.NewUserService(UserDataBase)
 
