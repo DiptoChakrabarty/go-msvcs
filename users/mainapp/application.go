@@ -11,7 +11,7 @@ var (
 	router                        = gin.New()
 	UserDataBase models.UserModel = models.NewModelDB()
 
-	UserService services.UserService = services.NewUserService(UserDataBase)
+	UserService services.UserOperationService = services.NewUserService(UserDataBase)
 
 	UserController controllers.UserController = controllers.NewUserController(UserService)
 )

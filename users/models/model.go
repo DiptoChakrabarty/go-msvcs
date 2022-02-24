@@ -43,7 +43,7 @@ func NewModelDB() UserModel {
 		panic("Unable to connect to DB")
 	}
 	db.AutoMigrate(&User{})
-	return Model{
+	return &Model{
 		DBConn: db,
 	}
 }

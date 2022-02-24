@@ -5,12 +5,19 @@ import (
 	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
 )
 
+type UserOperationService interface {
+	AddUser(u models.User) (*models.User, *resterrors.RestErr)
+	GetUser(id uint64) (*models.User, *resterrors.RestErr)
+	UpdateUser(u models.User) (*models.User, *resterrors.RestErr)
+	DeleteUser(id uint64) *resterrors.RestErr
+}
+
 type UserService struct {
 	model models.Model
 }
 
-func NewUserService(DbModel models.Model) UserService {
-	return UserService{
+func NewUserService(DbModel models.UserModel) UserOperationService {
+	return &UserService{
 		model: DbModel,
 	}
 }
@@ -23,7 +30,7 @@ func (svc *UserService) AddUser(u models.User) (*models.User, *resterrors.RestEr
 	if err != nil {
 		return nil, err
 	}
-	return u, nil
+	return &u, nil
 }
 
 func (svc *UserService) GetUser(id uint64) (*models.User, *resterrors.RestErr) {
