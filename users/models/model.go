@@ -12,15 +12,15 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-type Model struct {
-	DBConn *gorm.DB
-}
-
 type UserModel interface {
 	Save(usr User) *resterrors.RestErr
 	Find(id uint64) (*User, *resterrors.RestErr)
 	Update(usr User) *resterrors.RestErr
 	Delete(id uint64) *resterrors.RestErr
+}
+
+type Model struct {
+	DBConn *gorm.DB
 }
 
 func getEnv(key, defaultValue string) string {

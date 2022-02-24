@@ -10,12 +10,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserController struct {
-	svc services.UserService
+type UserOperationController interface {
+	CreateUser(ctx *gin.Context)
+	GetUser(ctx *gin.Context)
+	UpdateUser(ctx *gin.Context)
+	DeleteUser(ctx *gin.Context)
 }
 
-func NewUserController(svc services.UserService) UserController {
-	return UserController{
+type UserController struct {
+	svc services.UserOperationService
+}
+
+func NewUserController(svc services.UserOperationService) UserOperationController {
+	return &UserController{
 		svc: svc,
 	}
 }

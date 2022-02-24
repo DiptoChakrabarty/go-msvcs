@@ -13,7 +13,7 @@ var (
 
 	UserService services.UserOperationService = services.NewUserService(UserDataBase)
 
-	UserController controllers.UserController = controllers.NewUserController(UserService)
+	UserController controllers.UserOperationController = controllers.NewUserController(UserService)
 )
 
 func StartUserApplication() {
