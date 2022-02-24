@@ -9,6 +9,12 @@ type UserService struct {
 	model models.Model
 }
 
+func NewUserService(DbModel models.Model) UserService {
+	return UserService{
+		model: DbModel,
+	}
+}
+
 func (svc *UserService) AddUser(u models.User) (*models.User, *resterrors.RestErr) {
 	if err := u.Validate(); err != nil {
 		return nil, err

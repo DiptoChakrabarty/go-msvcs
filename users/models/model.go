@@ -29,14 +29,14 @@ func getDB() (db *gorm.DB, err error) {
 	return gorm.Open(db_type, db_connection_string)
 }
 
-func NewModelDB() *Model {
+func NewModelDB() Model {
 	db, err := getDB()
 	if err != nil {
 		fmt.Println(err.Error())
 		panic("Unable to connect to DB")
 	}
 	db.AutoMigrate(&User{})
-	return &Model{
+	return Model{
 		DBConn: db,
 	}
 }
