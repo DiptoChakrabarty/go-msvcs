@@ -13,7 +13,7 @@ type UserOperationService interface {
 }
 
 type UserService struct {
-	model models.Model
+	model models.UserModel
 }
 
 func NewUserService(DbModel models.UserModel) UserOperationService {

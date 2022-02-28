@@ -48,26 +48,35 @@ func NewModelDB() UserModel {
 	}
 }
 
-func (db Model) Save(usr User) *resterrors.RestErr {
+func (db *Model) Save(usr User) *resterrors.RestErr {
 	err := db.DBConn.Model(&User{}).Save(&usr)
-	return err
+	if err != nil {
+		return resterrors.BadRequestError("unable to save user")
+	}
+	return nil
 }
 
-func (db Model) Find(id uint64) (*User, *resterrors.RestErr) {
+func (db *Model) Find(id uint64) (*User, *resterrors.RestErr) {
 	var usr User
 	err := db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, id)
-	if gorm.IsRecordNotFoundError(err) {
+	if err != nil {
 		return nil, resterrors.BadRequestError("user not found")
 	}
 	return &usr, nil
 }
 
-func (db Model) Update(usr User) *resterrors.RestErr {
+func (db *Model) Update(usr User) *resterrors.RestErr {
 	err := db.DBConn.Model(&User{}).Save(&usr)
-	return err
+	if err != nil {
+		return resterrors.BadRequestError("unable to update user")
+	}
+	return nil
 }
 
-func (db Model) Delete(id uint64) *resterrors.RestErr {
+func (db *Model) Delete(id uint64) *resterrors.RestErr {
 	err := db.DBConn.Model(&User{}).Delete(&User{}, id)
-	return err
+	if err != nil {
+		return resterrors.BadRequestError("unable to delete user")
+	}
+	return nil
 }
