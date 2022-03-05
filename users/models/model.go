@@ -53,6 +53,7 @@ func (db *Model) Save(usr User) *resterrors.RestErr {
 	if err != nil {
 		return resterrors.BadRequestError("unable to save user")
 	}
+	fmt.Println(usr)
 	return nil
 }
 
@@ -62,6 +63,7 @@ func (db *Model) Find(id uint64) (*User, *resterrors.RestErr) {
 	if err != nil {
 		return nil, resterrors.BadRequestError("user not found")
 	}
+	fmt.Println(usr)
 	return &usr, nil
 }
 

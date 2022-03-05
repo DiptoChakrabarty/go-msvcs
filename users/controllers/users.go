@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -38,7 +39,8 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(saveErr.Status, saveErr)
 	}
-	ctx.JSON(http.StatusCreated, result)
+	fmt.Println(&result)
+	ctx.JSON(http.StatusCreated, gin.H{"message": "User Details Saved"})
 }
 
 func (user *UserController) GetUser(ctx *gin.Context) {
@@ -47,6 +49,7 @@ func (user *UserController) GetUser(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
+	fmt.Println(result)
 	ctx.JSON(http.StatusCreated, result)
 }
 

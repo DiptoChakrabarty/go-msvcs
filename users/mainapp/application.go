@@ -21,6 +21,7 @@ func StartUserApplication() {
 	router.GET("/health", controllers.Health)
 	router.GET("/users/:user_id", UserController.GetUser)
 	router.POST("/users", UserController.CreateUser)
+	router.PUT("/users/:user_id", UserController.UpdateUser)
 	router.DELETE("/users/:user_id", UserController.DeleteUser)
 	router.Run(":5000")
 }
