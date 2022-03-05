@@ -34,11 +34,8 @@ func (svc *UserService) AddUser(u models.User) (*models.User, *resterrors.RestEr
 }
 
 func (svc *UserService) GetUser(id uint64) (*models.User, *resterrors.RestErr) {
-	u, err := svc.model.Find(id)
-	if err != nil {
-		return nil, err
-	}
-	return u, nil
+	u := svc.model.Find(id)
+	return &u, nil
 }
 
 func (svc *UserService) UpdateUser(u models.User) (*models.User, *resterrors.RestErr) {

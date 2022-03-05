@@ -31,6 +31,7 @@ func NewUserController(svc services.UserOperationService) UserOperationControlle
 func (user *UserController) CreateUser(ctx *gin.Context) {
 	var usr models.User
 	err := ctx.ShouldBindJSON(&usr)
+	fmt.Println(usr)
 	if err != nil {
 		restErr := resterrors.BadRequestError("Invlaid Values Provided")
 		ctx.JSON(restErr.Status, restErr)
@@ -39,8 +40,8 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(saveErr.Status, saveErr)
 	}
-	fmt.Println(&result)
-	ctx.JSON(http.StatusCreated, gin.H{"message": "User Details Saved"})
+	//fmt.Println(&result)
+	ctx.JSON(http.StatusOK, result)
 }
 
 func (user *UserController) GetUser(ctx *gin.Context) {
@@ -49,8 +50,8 @@ func (user *UserController) GetUser(ctx *gin.Context) {
 	if err != nil {
 		return
 	}
-	fmt.Println(result)
-	ctx.JSON(http.StatusCreated, result)
+	//fmt.Println(result)
+	ctx.JSON(http.StatusOK, result)
 }
 
 func (user *UserController) UpdateUser(ctx *gin.Context) {
@@ -64,7 +65,7 @@ func (user *UserController) UpdateUser(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(saveErr.Status, saveErr)
 	}
-	ctx.JSON(http.StatusCreated, result)
+	ctx.JSON(http.StatusOK, result)
 }
 
 func (user *UserController) DeleteUser(ctx *gin.Context) {

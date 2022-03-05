@@ -14,7 +14,7 @@ import (
 
 type UserModel interface {
 	Save(usr User) *resterrors.RestErr
-	Find(id uint64) (*User, *resterrors.RestErr)
+	Find(id uint64) User
 	Update(usr User) *resterrors.RestErr
 	Delete(id uint64) *resterrors.RestErr
 }
@@ -49,22 +49,21 @@ func NewModelDB() UserModel {
 }
 
 func (db *Model) Save(usr User) *resterrors.RestErr {
-	err := db.DBConn.Model(&User{}).Save(&usr)
+	fmt.Println("This is Model", usr)
+	err := db.DBConn.Model(&User{}).Create(&usr)
 	if err != nil {
+		fmt.Println("Unable to save", err)
 		return resterrors.BadRequestError("unable to save user")
 	}
-	fmt.Println(usr)
 	return nil
 }
 
-func (db *Model) Find(id uint64) (*User, *resterrors.RestErr) {
+func (db *Model) Find(id uint64) User {
+	fmt.Println("This is Model find", id)
 	var usr User
-	err := db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, id)
-	if err != nil {
-		return nil, resterrors.BadRequestError("user not found")
-	}
+	db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, id)
 	fmt.Println(usr)
-	return &usr, nil
+	return usr
 }
 
 func (db *Model) Update(usr User) *resterrors.RestErr {
