@@ -33,6 +33,7 @@ func getEnv(key, defaultValue string) string {
 func getDB() (db *gorm.DB, err error) {
 	db_type := getEnv("DB_TYPE", "sqlite3")
 	db_connection_string := getEnv("DB_CONNECTION_STRING", "./db/movie.db")
+	fmt.Println(db_connection_string, db_type)
 	return gorm.Open(db_type, db_connection_string)
 }
 
@@ -53,7 +54,7 @@ func (db *Model) Save(usr User) *resterrors.RestErr {
 	err := db.DBConn.Model(&User{}).Create(&usr)
 	if err != nil {
 		fmt.Println("Unable to save", err)
-		return resterrors.BadRequestError("unable to save user")
+		return resterrors.BadRequestError("Unable to save error")
 	}
 	return nil
 }
