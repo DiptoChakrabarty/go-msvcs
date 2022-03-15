@@ -4,12 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mssql"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors" // Sqlite driver based on GGO
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 type UserModel interface {
@@ -31,10 +28,9 @@ func getEnv(key, defaultValue string) string {
 }
 
 func getDB() (db *gorm.DB, err error) {
-	db_type := getEnv("DB_TYPE", "sqlite3")
 	db_connection_string := getEnv("DB_CONNECTION_STRING", "./db/movie.db")
-	fmt.Println(db_connection_string, db_type)
-	return gorm.Open(db_type, db_connection_string)
+	fmt.Println(db_connection_string)
+	return gorm.Open(sqlite.Open(db_connection_string), &gorm.Config{})
 }
 
 func NewModelDB() UserModel {
@@ -51,9 +47,10 @@ func NewModelDB() UserModel {
 
 func (db *Model) Save(usr User) *resterrors.RestErr {
 	fmt.Println("This is Model", usr)
+	fmt.Println(usr.FirstName, usr.LastName, usr.Email, usr.Id)
 	err := db.DBConn.Model(&User{}).Create(&usr)
 	if err != nil {
-		fmt.Println("Unable to save", err)
+		fmt.Println(err)
 		return resterrors.BadRequestError("Unable to save error")
 	}
 	return nil
