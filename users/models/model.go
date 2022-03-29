@@ -50,7 +50,7 @@ func (db *Model) Save(usr User) *resterrors.RestErr {
 	fmt.Println(usr.FirstName, usr.LastName, usr.Email, usr.Id)
 	err := db.DBConn.Model(&User{}).Create(&usr)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error)
 		return resterrors.BadRequestError("Unable to save error")
 	}
 	return nil
