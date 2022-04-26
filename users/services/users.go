@@ -26,16 +26,19 @@ func (svc *UserService) AddUser(u models.User) (*models.User, *resterrors.RestEr
 	if err := u.Validate(); err != nil {
 		return nil, err
 	}
-	err := svc.model.Save(u)
+	usr, err := svc.model.Save(u)
 	if err != nil {
 		return nil, err
 	}
-	return &u, nil
+	return usr, nil
 }
 
 func (svc *UserService) GetUser(id uint64) (*models.User, *resterrors.RestErr) {
-	u := svc.model.Find(id)
-	return &u, nil
+	u, err := svc.model.Find(id)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
 }
 
 func (svc *UserService) UpdateUser(u models.User) (*models.User, *resterrors.RestErr) {
