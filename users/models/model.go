@@ -47,10 +47,12 @@ func NewModelDB() UserModel {
 
 func (db *Model) Save(usr User) *resterrors.RestErr {
 	fmt.Println("This is Model", usr)
-	fmt.Println(usr.FirstName, usr.LastName, usr.Email, usr.Id)
-	err := db.DBConn.Model(&User{}).Create(&usr)
-	if err != nil {
-		fmt.Println(err.Error)
+	fmt.Println(usr.FirstName, usr.LastName, usr.Email)
+	result := db.DBConn.Model(&User{}).Create(&usr)
+	fmt.Println(result.RowsAffected, usr.ID)
+	if result.Error != nil {
+		fmt.Println("This is the error")
+		fmt.Println(result.Error)
 		return resterrors.BadRequestError("Unable to save error")
 	}
 	return nil
@@ -59,7 +61,7 @@ func (db *Model) Save(usr User) *resterrors.RestErr {
 func (db *Model) Find(id uint64) User {
 	fmt.Println("This is Model find", id)
 	var usr User
-	db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, id)
+	db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, 1)
 	fmt.Println(usr)
 	return usr
 }
