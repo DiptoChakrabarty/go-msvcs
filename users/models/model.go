@@ -61,7 +61,7 @@ func (db *Model) Save(usr User) *resterrors.RestErr {
 func (db *Model) Find(id uint64) User {
 	fmt.Println("This is Model find", id)
 	var usr User
-	db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, 1)
+	db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, id)
 	fmt.Println(usr)
 	return usr
 }
