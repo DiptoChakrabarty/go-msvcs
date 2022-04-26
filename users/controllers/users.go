@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -31,7 +30,7 @@ func NewUserController(svc services.UserOperationService) UserOperationControlle
 func (user *UserController) CreateUser(ctx *gin.Context) {
 	var usr models.User
 	err := ctx.ShouldBindJSON(&usr)
-	fmt.Println(usr)
+	//fmt.Println(usr)
 	if err != nil {
 		restErr := resterrors.BadRequestError("Invlaid Values Provided")
 		ctx.JSON(restErr.Status, restErr)

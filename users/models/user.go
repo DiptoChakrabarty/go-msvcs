@@ -11,7 +11,7 @@ type User struct {
 	FirstName string `json:"first" binding:"required" gorm:"type:varchar(10)"`
 	LastName  string `json:"last" binding:"required" gorm:"type:varchar(10)"`
 	Email     string `json:"email" binding:"required" gorm:"type:varchar(10)"`
-	//Created   string `json:"-" gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	Created   string `json:"-" gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 }
 
 func (usr User) Validate() *resterrors.RestErr {
