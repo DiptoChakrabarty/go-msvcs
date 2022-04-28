@@ -32,7 +32,7 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&usr)
 	//fmt.Println(usr)
 	if err != nil {
-		restErr := resterrors.BadRequestError("Invlaid Values Provided")
+		restErr := resterrors.BadRequestError("Invalid Values Provided")
 		ctx.JSON(restErr.Status, restErr)
 	}
 	result, saveErr := user.svc.AddUser(usr)
@@ -40,7 +40,7 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 		ctx.JSON(saveErr.Status, saveErr)
 	}
 	//fmt.Println(&result)
-	ctx.JSON(http.StatusOK, result)
+	ctx.JSON(http.StatusOK, result.Marshall(ctx.GetHeader("X-Public") == "true"))
 }
 
 func (user *UserController) GetUser(ctx *gin.Context) {
@@ -50,7 +50,7 @@ func (user *UserController) GetUser(ctx *gin.Context) {
 		return
 	}
 	//fmt.Println(result)
-	ctx.JSON(http.StatusOK, result)
+	ctx.JSON(http.StatusOK, result.Marshall(ctx.GetHeader("X-Public") == "true"))
 }
 
 func (user *UserController) UpdateUser(ctx *gin.Context) {
@@ -64,7 +64,7 @@ func (user *UserController) UpdateUser(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(saveErr.Status, saveErr)
 	}
-	ctx.JSON(http.StatusOK, result)
+	ctx.JSON(http.StatusOK, result.Marshall(ctx.GetHeader("X-Public") == "true"))
 }
 
 func (user *UserController) DeleteUser(ctx *gin.Context) {
