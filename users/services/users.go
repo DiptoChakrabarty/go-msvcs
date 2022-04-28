@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/DiptoChakrabarty/go-mvcs/users/models"
+	"github.com/DiptoChakrabarty/go-mvcs/users/utils/hash"
 	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
 )
 
@@ -26,6 +27,7 @@ func (svc *UserService) AddUser(u models.User) (*models.User, *resterrors.RestEr
 	if err := u.Validate(); err != nil {
 		return nil, err
 	}
+	u.Password = hash.GenerateMD5(u.Password)
 	usr, err := svc.model.Save(u)
 	if err != nil {
 		return nil, err
