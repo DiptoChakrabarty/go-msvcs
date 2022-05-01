@@ -1,5 +1,6 @@
 # The Users Microservice
 
+Endpoint - /users
 
 Example Request
 ```sh
