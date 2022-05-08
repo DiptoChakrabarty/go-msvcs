@@ -23,5 +23,5 @@ func StartUserApplication() {
 	router.POST("/users", UserController.CreateUser)
 	router.PUT("/users/:id", UserController.UpdateUser)
 	router.DELETE("/users/:id", UserController.DeleteUser)
-	router.Run(":5000")
+	router.Run(":6000")
 }
