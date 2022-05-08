@@ -15,12 +15,12 @@ func init() {
 		Level:       zap.NewAtomicLevelAt(zap.InfoLevel),
 		Encoding:    "json",
 		EncoderConfig: zapcore.EncoderConfig{
-			LevelKey:      "level",
-			TimeKey:       "time",
-			MessageKey:    "msg",
-			EncodeTime:    zapcore.ISO8601TimeEncoder,
-			EncodeLevel:   zapcore.LowercaseColorLevelEncoder,
-			EncoderCaller: zapcore.ShortCallerEncoder,
+			LevelKey:     "level",
+			TimeKey:      "time",
+			MessageKey:   "msg",
+			EncodeTime:   zapcore.ISO8601TimeEncoder,
+			EncodeLevel:  zapcore.LowercaseLevelEncoder,
+			EncodeCaller: zapcore.ShortCallerEncoder,
 		},
 	}
 
@@ -28,4 +28,17 @@ func init() {
 	if Log, err = logConfig.Build(); err != nil {
 		panic(err)
 	}
+}
+
+func Info(msg string, tags ...zap.Field) {
+	Log.Info(msg, tags...)
+	Log.Sync()
+}
+
+func Error(msg string, err error, tags ...zap.Field) {
+	if err != nil {
+		tags = append(tags, zap.NamedError("error", err))
+	}
+	Log.Error(msg, tags...)
+	Log.Sync()
 }

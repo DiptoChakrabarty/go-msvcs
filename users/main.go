@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	logger.Log.Info("about to start application.....")
+	logger.Info("about to start application.....")
 	mainapp.StartUserApplication()
 }
