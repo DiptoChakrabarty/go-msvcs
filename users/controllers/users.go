@@ -32,7 +32,7 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&usr)
 	//fmt.Println(usr)
 	if err != nil {
-		restErr := resterrors.BadRequestError("Invalid Values Provided")
+		restErr := resterrors.BadRequestError(err.Error())
 		ctx.JSON(restErr.Status, restErr)
 	}
 	result, saveErr := user.svc.AddUser(usr)
@@ -57,7 +57,7 @@ func (user *UserController) UpdateUser(ctx *gin.Context) {
 	var usr models.User
 	err := ctx.ShouldBindJSON(&usr)
 	if err != nil {
-		restErr := resterrors.BadRequestError("Invalid Values Provided")
+		restErr := resterrors.BadRequestError(err.Error())
 		ctx.JSON(restErr.Status, restErr)
 	}
 	result, saveErr := user.svc.UpdateUser(usr)

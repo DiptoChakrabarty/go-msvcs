@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/DiptoChakrabarty/go-mvcs/logger"
 	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors" // Sqlite driver based on GGO
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -49,6 +50,7 @@ func (db *Model) Save(usr User) (*User, *resterrors.RestErr) {
 	result := db.DBConn.Model(&User{}).Create(&usr)
 	fmt.Println(result.RowsAffected, usr.ID)
 	if result.Error != nil {
+		logger.Error("Failed to save User", result.Error)
 		return nil, resterrors.BadRequestError("Unable to save error")
 	}
 	return &usr, nil
@@ -58,6 +60,7 @@ func (db *Model) Find(id uint64) (*User, *resterrors.RestErr) {
 	var usr User
 	result := db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, id)
 	if result.Error != nil {
+		logger.Error("Failed to save User", result.Error)
 		return nil, resterrors.BadRequestError("Unable to find user")
 	}
 	fmt.Println(usr)
@@ -65,17 +68,19 @@ func (db *Model) Find(id uint64) (*User, *resterrors.RestErr) {
 }
 
 func (db *Model) Update(usr User) *resterrors.RestErr {
-	err := db.DBConn.Model(&User{}).Save(&usr)
-	if err != nil {
-		return resterrors.BadRequestError("unable to update user")
+	result := db.DBConn.Model(&User{}).Save(&usr)
+	if result.Error != nil {
+		logger.Error("Failed to save User", result.Error)
+		return resterrors.BadRequestError("Unable to update user")
 	}
 	return nil
 }
 
 func (db *Model) Delete(id uint64) *resterrors.RestErr {
-	err := db.DBConn.Model(&User{}).Delete(&User{}, id)
-	if err != nil {
-		return resterrors.BadRequestError("unable to delete user")
+	result := db.DBConn.Model(&User{}).Delete(&User{}, id)
+	if result.Error != nil {
+		logger.Error("Failed to save User", result.Error)
+		return resterrors.BadRequestError("Unable to delete user")
 	}
 	return nil
 }
