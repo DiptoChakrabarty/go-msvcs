@@ -53,6 +53,7 @@ func (db *Model) Save(usr User) (*User, *resterrors.RestErr) {
 		logger.Error("Failed to save User", result.Error)
 		return nil, resterrors.BadRequestError("Unable to save error")
 	}
+	logger.Info("User Saved to DataBase")
 	return &usr, nil
 }
 
@@ -63,7 +64,7 @@ func (db *Model) Find(id uint64) (*User, *resterrors.RestErr) {
 		logger.Error("Failed to save User", result.Error)
 		return nil, resterrors.BadRequestError("Unable to find user")
 	}
-	fmt.Println(usr)
+	logger.Info("User Retreived Successfully")
 	return &usr, nil
 }
 
@@ -73,6 +74,7 @@ func (db *Model) Update(usr User) *resterrors.RestErr {
 		logger.Error("Failed to save User", result.Error)
 		return resterrors.BadRequestError("Unable to update user")
 	}
+	logger.Info("User Updated Successfully")
 	return nil
 }
 
@@ -82,5 +84,6 @@ func (db *Model) Delete(id uint64) *resterrors.RestErr {
 		logger.Error("Failed to save User", result.Error)
 		return resterrors.BadRequestError("Unable to delete user")
 	}
+	logger.Info("user deleted Successfully")
 	return nil
 }
