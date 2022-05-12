@@ -18,3 +18,7 @@ func GenerateAccessToken() AccessToken {
 		Expires: time.Now().UTC().Add(expirationTime * time.Hour).Unix(),
 	}
 }
+
+func (at AccessToken) CheckExpired() bool {
+	return false
+}
