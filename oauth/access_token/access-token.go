@@ -1,4 +1,4 @@
-package auth
+package access_token
 
 import "time"
 
