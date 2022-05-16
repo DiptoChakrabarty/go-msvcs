@@ -9,7 +9,7 @@ type Repository interface {
 	GetById(string) (*access_token.AccessToken, *resterrors.RestErr)
 }
 
-type Service interface {
+type AccessTokenService interface {
 	GetById(string) (*access_token.AccessToken, *resterrors.RestErr)
 }
 
@@ -17,9 +17,9 @@ type service struct {
 	repository Repository
 }
 
-func NewAccessTokenService(repo Repository) Service {
+func NewAccessTokenService(repo Repository) AccessTokenService {
 	return &service{
-		repository: repo
+		repository: repo,
 	}
 }
 
