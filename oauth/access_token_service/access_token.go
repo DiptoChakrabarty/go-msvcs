@@ -1,4 +1,4 @@
-package service
+package access_token_service
 
 import (
 	"github.com/DiptoChakrabarty/go-mvcs/oauth/access_token"
