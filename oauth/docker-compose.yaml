@@ -17,3 +17,6 @@ services:
       - CASSANDRA_SEEDS=cassandra
       - CASSANDRA_PASSWORD_SEEDER=yes
       - CASSANDRA_PASSWORD=cassandra
+volumes:
+  cassandra_data:
+    driver: local
