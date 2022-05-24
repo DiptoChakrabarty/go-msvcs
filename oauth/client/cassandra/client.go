@@ -23,4 +23,11 @@ func Connect() {
 		return
 	}
 
+	// creating table
+	err = session.Query("CREATE TABLE IF NOT EXISTS oauth.users (name text, access_token text, id int), PRIMARY KEY (id));").Exec()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 }
