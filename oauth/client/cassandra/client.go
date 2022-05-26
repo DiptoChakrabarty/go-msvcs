@@ -6,7 +6,7 @@ import (
 	"github.com/gocql/gocql"
 )
 
-func Connect() {
+func init() {
 	cluster := gocql.NewCluster()
 	cluster.Authenticator = gocql.PasswordAuthenticator{Username: "random", Password: "random"}
 	session, err := cluster.CreateSession()
