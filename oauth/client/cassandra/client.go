@@ -2,13 +2,23 @@ package cassandra
 
 import (
 	"log"
+	"os"
 
 	"github.com/gocql/gocql"
+	"github.com/joho/godotenv"
 )
 
+func getenvValue(key string) string {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading env file")
+	}
+	return os.Getenv(key)
+}
+
 func init() {
-	cluster := gocql.NewCluster()
-	cluster.Authenticator = gocql.PasswordAuthenticator{Username: "random", Password: "random"}
+	cluster := gocql.NewCluster("127.0.0.1")
+	cluster.Authenticator = gocql.PasswordAuthenticator{Username: getenvValue("username"), Password: getenvValue("password")}
 	session, err := cluster.CreateSession()
 	if err != nil {
 		log.Println(err)
