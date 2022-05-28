@@ -1,7 +1,9 @@
 package database
 
 import (
+	"github.com/DiptoChakrabarty/go-mvcs/logger"
 	"github.com/DiptoChakrabarty/go-mvcs/oauth/access_token"
+	"github.com/DiptoChakrabarty/go-mvcs/oauth/client/cassandra"
 	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
 )
 
@@ -16,5 +18,9 @@ func NewDBRepository() DBRepository {
 }
 
 func (db dbrepository) GetById(string) (*access_token.AccessToken, *resterrors.RestErr) {
+	_, err := cassandra.GetDBSession()
+	if err != nil {
+		logger.Error("Error while creating DB Session", err)
+	}
 	return nil, nil
 }
