@@ -2,9 +2,9 @@ package cassandra
 
 import (
 	"errors"
-	"log"
 	"os"
 
+	"github.com/DiptoChakrabarty/go-mvcs/logger"
 	"github.com/gocql/gocql"
 	"github.com/joho/godotenv"
 )
@@ -16,7 +16,7 @@ var (
 func getenvValue(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatalf("Error loading env file")
+		logger.Error("Unable to load env file", err)
 	}
 	return os.Getenv(key)
 }
@@ -31,7 +31,7 @@ func init() {
 func GetDBSession() (*gocql.Session, error) {
 	session, err := cluster.CreateSession()
 	if err != nil {
-		log.Println(err)
+		logger.Error("Unable to create Cluster session", err)
 		return nil, errors.New("Unable to create session")
 	}
 	defer session.Close()
@@ -39,7 +39,7 @@ func GetDBSession() (*gocql.Session, error) {
 	// creating keyspace
 	err = session.Query("CREATE KEYSPACE IF NOT EXISTS oauth WITH REPLICATION= {'class': 'NetworkTopologyStrategy'};").Exec()
 	if err != nil {
-		log.Println(err)
+		logger.Error("Unable to get keyspace", err)
 		return nil, errors.New("Unable to get keyspace")
 	}
 	cluster.Keyspace = "oauth"
@@ -47,7 +47,7 @@ func GetDBSession() (*gocql.Session, error) {
 	// creating table
 	err = session.Query("CREATE TABLE IF NOT EXISTS oauth.users (name text, access_token text, id int), PRIMARY KEY (id));").Exec()
 	if err != nil {
-		log.Println(err)
+		logger.Error("Unable to identify table", err)
 		return nil, errors.New("Unable to get table")
 	}
 	return session, nil
