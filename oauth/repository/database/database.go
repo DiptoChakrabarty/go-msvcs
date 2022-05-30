@@ -18,9 +18,10 @@ func NewDBRepository() DBRepository {
 }
 
 func (db dbrepository) GetById(string) (*access_token.AccessToken, *resterrors.RestErr) {
-	_, err := cassandra.GetDBSession()
+	session, err := cassandra.GetDBSession()
 	if err != nil {
 		logger.Error("Error while creating DB Session", err)
 	}
+	defer session.Close()
 	return nil, nil
 }
