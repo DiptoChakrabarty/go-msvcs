@@ -23,7 +23,7 @@ func getenvValue(key string) string {
 
 func init() {
 	cluster := gocql.NewCluster("127.0.0.1")
-	cluster.Authenticator = gocql.PasswordAuthenticator{Username: getenvValue("username"), Password: getenvValue("password")}
+	cluster.Authenticator = gocql.PasswordAuthenticator{Username: getenvValue("USERNAME"), Password: getenvValue("PASSWORD")}
 	cluster.Consistency = gocql.Quorum
 
 }

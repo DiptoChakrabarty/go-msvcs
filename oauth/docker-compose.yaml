@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   cassandra:
     image: docker.io/bitnami/cassandra:latest
