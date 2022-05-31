@@ -13,26 +13,33 @@ type RestErr interface {
 }
 
 type restErr struct {
-	Message string        `json:"msg"`
-	Status  int           `json:"status"`
-	ErrorErr   string        `json:error"`
-	Cause   []interface{} `json:"causes"`
+	ErrMessage string        `json:"msg"`
+	ErrStatus  int           `json:"status"`
+	ErrError   string        `json:error"`
+	ErrCause   []interface{} `json:"causes"`
 }
 
 func (r restErr) Error() string {
 	return fmt.Sprintf("message: %s - status: %d - error: %s - causes: %v",
-		r.Message, r.Status, r.ErrorErr, r.Cause)
+		r.ErrMessage, r.ErrStatus, r.ErrError, r.ErrCause)
 }
 
+func (r restErr) Message() string {
+	return r.ErrMessage
+}
 
+func (r restErr) Status() int {
+	return r.ErrStatus
+}
 
-
-
+func (r restErr) Causes() []interface{} {
+	return r.Cause
+}
 
 func BadRequestError(m string) *restErr {
-	return &RestErr{
-		Message: "Invalid Values Given",
-		Status:  http.StatusBadRequest,
-		Error:   "bad_request",
+	return &restErr{
+		ErrMessage: "Invalid Values Given",
+		ErrStatus:  http.StatusBadRequest,
+		ErrError:   "bad_request",
 	}
 }
