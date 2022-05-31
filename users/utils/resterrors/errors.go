@@ -33,13 +33,50 @@ func (r restErr) Status() int {
 }
 
 func (r restErr) Causes() []interface{} {
-	return r.Cause
+	return r.ErrCause
 }
 
-func BadRequestError(m string) *restErr {
-	return &restErr{
-		ErrMessage: "Invalid Values Given",
+func NewRestError(msg string, status int, err string, cause []interface{}) RestErr {
+	return restErr{
+		ErrMessage: msg,
+		ErrStatus:  status,
+		ErrError:   err,
+		ErrCause:   cause,
+	}
+}
+
+func BadRequestError(m string) RestErr {
+	return restErr{
+		ErrMessage: m,
 		ErrStatus:  http.StatusBadRequest,
 		ErrError:   "bad_request",
 	}
+}
+
+func NotFound(m string) RestErr {
+	return restErr{
+		ErrMessage: m,
+		ErrStatus:  http.StatusNotFound,
+		ErrError:   "not_found",
+	}
+}
+
+func UnAuthorized(m string) RestErr {
+	return restErr{
+		ErrMessage: m,
+		ErrStatus:  http.StatusUnauthorized,
+		ErrError:   "unauthorized",
+	}
+}
+
+func InternalServerError(m string, err error) RestErr {
+	rerror := restErr{
+		ErrMessage: m,
+		ErrStatus:  http.StatusInternalServerError,
+		ErrError:   "internal_error",
+	}
+	if err != nil {
+		rerror.ErrCause = append(rerror.ErrCause, err)
+	}
+	return rerror
 }
