@@ -3,7 +3,7 @@ package models
 import (
 	"strings"
 
-	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
+	"github.com/DiptoChakrabarty/go-mvcs/resterrors"
 )
 
 type User struct {

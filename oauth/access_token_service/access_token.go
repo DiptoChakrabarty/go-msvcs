@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/DiptoChakrabarty/go-mvcs/oauth/access_token"
-	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
+	"github.com/DiptoChakrabarty/go-mvcs/resterrors"
 )
 
 type Repository interface {

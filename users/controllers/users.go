@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/DiptoChakrabarty/go-mvcs/resterrors"
 	"github.com/DiptoChakrabarty/go-mvcs/users/models"
 	"github.com/DiptoChakrabarty/go-mvcs/users/services"
-	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -37,7 +37,7 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 	}
 	result, saveErr := user.svc.AddUser(usr)
 	if err != nil {
-		ctx.JSON(saveErr.Status, saveErr)
+		ctx.JSON(saveErr.ErrStatus, saveErr)
 	}
 	//fmt.Println(&result)
 	ctx.JSON(http.StatusOK, result.Marshall(ctx.GetHeader("X-Public") == "true"))

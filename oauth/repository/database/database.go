@@ -4,7 +4,7 @@ import (
 	"github.com/DiptoChakrabarty/go-mvcs/logger"
 	"github.com/DiptoChakrabarty/go-mvcs/oauth/access_token"
 	"github.com/DiptoChakrabarty/go-mvcs/oauth/client/cassandra"
-	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
+	"github.com/DiptoChakrabarty/go-mvcs/resterrors"
 )
 
 const (

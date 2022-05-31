@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/DiptoChakrabarty/go-mvcs/logger"
-	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors" // Sqlite driver based on GGO
+	"github.com/DiptoChakrabarty/go-mvcs/resterrors" // Sqlite driver based on GGO
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
