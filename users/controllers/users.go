@@ -33,11 +33,11 @@ func (user *UserController) CreateUser(ctx *gin.Context) {
 	//fmt.Println(usr)
 	if err != nil {
 		restErr := resterrors.BadRequestError(err.Error())
-		ctx.JSON(restErr.Status, restErr)
+		ctx.JSON(restErr.Status(), restErr)
 	}
 	result, saveErr := user.svc.AddUser(usr)
 	if err != nil {
-		ctx.JSON(saveErr.ErrStatus, saveErr)
+		ctx.JSON(saveErr.Status(), saveErr)
 	}
 	//fmt.Println(&result)
 	ctx.JSON(http.StatusOK, result.Marshall(ctx.GetHeader("X-Public") == "true"))
@@ -58,11 +58,11 @@ func (user *UserController) UpdateUser(ctx *gin.Context) {
 	err := ctx.ShouldBindJSON(&usr)
 	if err != nil {
 		restErr := resterrors.BadRequestError(err.Error())
-		ctx.JSON(restErr.Status, restErr)
+		ctx.JSON(restErr.Status(), restErr)
 	}
 	result, saveErr := user.svc.UpdateUser(usr)
 	if err != nil {
-		ctx.JSON(saveErr.Status, saveErr)
+		ctx.JSON(saveErr.Status(), saveErr)
 	}
 	ctx.JSON(http.StatusOK, result.Marshall(ctx.GetHeader("X-Public") == "true"))
 }
