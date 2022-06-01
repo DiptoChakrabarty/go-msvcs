@@ -26,7 +26,7 @@ func (hdr accessTokenHandler) GetById(ctx *gin.Context) {
 	accessTokenID := strings.TrimSpace(ctx.Param("access_token_id"))
 	accessToken, err := hdr.service.GetById(accessTokenID)
 	if err != nil {
-		ctx.JSON(err.Status, err)
+		ctx.JSON(err.Status(), err)
 		return
 	}
 	ctx.JSON(http.StatusOK, accessToken)

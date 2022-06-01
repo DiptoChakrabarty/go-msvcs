@@ -8,11 +8,11 @@ import (
 )
 
 type Repository interface {
-	GetById(string) (*access_token.AccessToken, *resterrors.RestErr)
+	GetById(string) (*access_token.AccessToken, resterrors.RestErr)
 }
 
 type AccessTokenService interface {
-	GetById(string) (*access_token.AccessToken, *resterrors.RestErr)
+	GetById(string) (*access_token.AccessToken, resterrors.RestErr)
 }
 
 type service struct {
@@ -25,7 +25,7 @@ func NewAccessTokenService(repo Repository) AccessTokenService {
 	}
 }
 
-func (s *service) GetById(accessTokenID string) (*access_token.AccessToken, *resterrors.RestErr) {
+func (s *service) GetById(accessTokenID string) (*access_token.AccessToken, resterrors.RestErr) {
 	accessTokenID = strings.TrimSpace(accessTokenID)
 	if len(accessTokenID) == 0 {
 		return nil, resterrors.BadRequestError("Invalid AccessToken given")
