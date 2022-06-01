@@ -7,10 +7,10 @@ import (
 )
 
 type UserOperationService interface {
-	AddUser(u models.User) (*models.User, *resterrors.RestErr)
-	GetUser(id uint64) (*models.User, *resterrors.RestErr)
-	UpdateUser(u models.User) (*models.User, *resterrors.RestErr)
-	DeleteUser(id uint64) *resterrors.RestErr
+	AddUser(u models.User) (*models.User, resterrors.RestErr)
+	GetUser(id uint64) (*models.User, resterrors.RestErr)
+	UpdateUser(u models.User) (*models.User, resterrors.RestErr)
+	DeleteUser(id uint64) resterrors.RestErr
 }
 
 type UserService struct {
@@ -23,7 +23,7 @@ func NewUserService(DbModel models.UserModel) UserOperationService {
 	}
 }
 
-func (svc *UserService) AddUser(u models.User) (*models.User, *resterrors.RestErr) {
+func (svc *UserService) AddUser(u models.User) (*models.User, resterrors.RestErr) {
 	if err := u.Validate(); err != nil {
 		return nil, err
 	}
@@ -35,7 +35,7 @@ func (svc *UserService) AddUser(u models.User) (*models.User, *resterrors.RestEr
 	return usr, nil
 }
 
-func (svc *UserService) GetUser(id uint64) (*models.User, *resterrors.RestErr) {
+func (svc *UserService) GetUser(id uint64) (*models.User, resterrors.RestErr) {
 	u, err := svc.model.Find(id)
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (svc *UserService) GetUser(id uint64) (*models.User, *resterrors.RestErr) {
 	return u, nil
 }
 
-func (svc *UserService) UpdateUser(u models.User) (*models.User, *resterrors.RestErr) {
+func (svc *UserService) UpdateUser(u models.User) (*models.User, resterrors.RestErr) {
 	if err := u.Validate(); err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (svc *UserService) UpdateUser(u models.User) (*models.User, *resterrors.Res
 	return &u, nil
 }
 
-func (svc *UserService) DeleteUser(id uint64) *resterrors.RestErr {
+func (svc *UserService) DeleteUser(id uint64) resterrors.RestErr {
 	err := svc.model.Delete(id)
 	if err != nil {
 		return err
