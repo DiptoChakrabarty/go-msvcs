@@ -1,9 +1,9 @@
 package services
 
 import (
+	"github.com/DiptoChakrabarty/go-mvcs/resterrors"
 	"github.com/DiptoChakrabarty/go-mvcs/users/models"
 	"github.com/DiptoChakrabarty/go-mvcs/users/utils/hash"
-	"github.com/DiptoChakrabarty/go-mvcs/users/utils/resterrors"
 )
 
 type UserOperationService interface {
