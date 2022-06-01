@@ -11,10 +11,10 @@ import (
 )
 
 type UserModel interface {
-	Save(usr User) (*User, *resterrors.RestErr)
-	Find(id uint64) (*User, *resterrors.RestErr)
-	Update(usr User) *resterrors.RestErr
-	Delete(id uint64) *resterrors.RestErr
+	Save(usr User) (*User, resterrors.RestErr)
+	Find(id uint64) (*User, resterrors.RestErr)
+	Update(usr User) resterrors.RestErr
+	Delete(id uint64) resterrors.RestErr
 }
 
 type Model struct {
@@ -46,7 +46,7 @@ func NewModelDB() UserModel {
 	}
 }
 
-func (db *Model) Save(usr User) (*User, *resterrors.RestErr) {
+func (db *Model) Save(usr User) (*User, resterrors.RestErr) {
 	result := db.DBConn.Model(&User{}).Create(&usr)
 	fmt.Println(result.RowsAffected, usr.ID)
 	if result.Error != nil {
@@ -57,31 +57,31 @@ func (db *Model) Save(usr User) (*User, *resterrors.RestErr) {
 	return &usr, nil
 }
 
-func (db *Model) Find(id uint64) (*User, *resterrors.RestErr) {
+func (db *Model) Find(id uint64) (*User, resterrors.RestErr) {
 	var usr User
 	result := db.DBConn.Model(&User{}).Set("gorm:auto_preload", true).Find(&usr, id)
 	if result.Error != nil {
-		logger.Error("Failed to save User", result.Error)
-		return nil, resterrors.BadRequestError("Unable to find user")
+		logger.Error("Failed to find User", result.Error)
+		return nil, resterrors.NotFound("Unable to find user")
 	}
 	logger.Info("User Retreived Successfully")
 	return &usr, nil
 }
 
-func (db *Model) Update(usr User) *resterrors.RestErr {
+func (db *Model) Update(usr User) resterrors.RestErr {
 	result := db.DBConn.Model(&User{}).Save(&usr)
 	if result.Error != nil {
-		logger.Error("Failed to save User", result.Error)
+		logger.Error("Failed to update User", result.Error)
 		return resterrors.BadRequestError("Unable to update user")
 	}
 	logger.Info("User Updated Successfully")
 	return nil
 }
 
-func (db *Model) Delete(id uint64) *resterrors.RestErr {
+func (db *Model) Delete(id uint64) resterrors.RestErr {
 	result := db.DBConn.Model(&User{}).Delete(&User{}, id)
 	if result.Error != nil {
-		logger.Error("Failed to save User", result.Error)
+		logger.Error("Failed to delete User", result.Error)
 		return resterrors.BadRequestError("Unable to delete user")
 	}
 	logger.Info("user deleted Successfully")

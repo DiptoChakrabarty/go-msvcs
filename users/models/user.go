@@ -15,7 +15,7 @@ type User struct {
 	Password  string `json:"password" binding:"required" gorm:"type:varchar(20)"`
 }
 
-func (usr User) Validate() *resterrors.RestErr {
+func (usr User) Validate() resterrors.RestErr {
 	usr.Email = strings.TrimSpace(strings.ToLower(usr.Email))
 	if usr.Email == "" {
 		return resterrors.BadRequestError("invalid email address")
