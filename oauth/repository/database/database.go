@@ -44,13 +44,22 @@ func (db dbrepository) GetById(id string) (*access_token.AccessToken, resterrors
 	return &result, nil
 }
 
-func (db dbrepository) Create(aT access_token.AccessToken) resterrors.RestErr {
+func (db dbrepository) Create(at access_token.AccessToken) resterrors.RestErr {
 	session, err := cassandra.GetDBSession()
 	if err != nil {
 		logger.Error("Error while creating DB Session", err)
 		return resterrors.InternalServerError("Errror creating a DB Session", err)
 	}
 	defer session.Close()
+
+	if err := session.Query(queryCreateToken, 
+				at.AccessToken,
+				at.UserId,
+				at.ClientId,
+				at.Expires).Exec(); err != nil {
+					logger.Error("Unable to create the access token", err)
+					return re
+				}
 
 	return nil
 }
