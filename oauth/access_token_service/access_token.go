@@ -40,13 +40,17 @@ func (s *service) GetById(accessTokenID string) (*access_token.AccessToken, rest
 }
 
 func (s *service) Create(at access_token.AccessToken) resterrors.RestErr {
-	accessTokenID := strings.TrimSpace(at.AccessToken)
-	if len(accessTokenID) == 0 {
-		return resterrors.BadRequestError("Invalid AccessToken given")
+	if err := at.ValidateToken(); err != nil {
+		//logerr.Error("Unable to validate token", err)
+		return err
 	}
 	return s.repository.Create(at)
 }
 
 func (s *service) UpdateExpiryTime(at access_token.AccessToken) resterrors.RestErr {
-	return nil
+	if err := at.ValidateToken(); err != nil {
+		//logerr.Error("Unable to validate token", err)
+		return err
+	}
+	return s.repository.UpdateExpiryTime(at)
 }
