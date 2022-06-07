@@ -9,6 +9,8 @@ import (
 
 type Repository interface {
 	GetById(string) (*access_token.AccessToken, resterrors.RestErr)
+	Create(access_token.AccessToken) resterrors.RestErr
+	UpdateExpiryTime(access_token.AccessToken) resterrors.RestErr
 }
 
 type AccessTokenService interface {
@@ -35,4 +37,16 @@ func (s *service) GetById(accessTokenID string) (*access_token.AccessToken, rest
 		return nil, err
 	}
 	return accessToken, nil
+}
+
+func (s *service) Create(at access_token.AccessToken) resterrors.RestErr {
+	accessTokenID := strings.TrimSpace(at.AccessToken)
+	if len(accessTokenID) == 0 {
+		return resterrors.BadRequestError("Invalid AccessToken given")
+	}
+	return s.repository.Create(at)
+}
+
+func (s *service) UpdateExpiryTime(at access_token.AccessToken) resterrors.RestErr {
+	return nil
 }

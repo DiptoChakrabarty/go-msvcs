@@ -60,7 +60,7 @@ func (db dbrepository) Create(at access_token.AccessToken) resterrors.RestErr {
 		at.ClientId,
 		at.Expires).Exec(); err != nil {
 		logger.Error("Unable to create the access token", err)
-		return resterrors.InternalServerError("Unable to create access token")
+		return resterrors.InternalServerError("Unable to create access token", err)
 	}
 	return nil
 }
@@ -77,7 +77,7 @@ func (db dbrepository) UpdateExpiryTime(at access_token.AccessToken) resterrors.
 		at.Expires,
 		at.AccessToken).Exec(); err != nil {
 		logger.Error("Unable to update access token expiry time", err)
-		return resterrors.InternalServerError("Unable to update access token expiry time")
+		return resterrors.InternalServerError("Unable to update access token expiry time", err)
 	}
 	return nil
 }
