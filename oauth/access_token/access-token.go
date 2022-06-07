@@ -1,6 +1,11 @@
 package access_token
 
-import "time"
+import (
+	"strings"
+	"time"
+
+	"github.com/DiptoChakrabarty/go-mvcs/resterrors"
+)
 
 const (
 	expirationTime = 24
@@ -17,6 +22,23 @@ func GenerateAccessToken() AccessToken {
 	return AccessToken{
 		Expires: time.Now().UTC().Add(expirationTime * time.Hour).Unix(),
 	}
+}
+
+func (at AccessToken) ValidateToken() resterrors.RestErr {
+	at.AccessToken = strings.TrimSpace(at.AccessToken)
+	if len(at.AccessToken) == 0 {
+		return resterrors.BadRequestError("invalid access token id")
+	}
+	if at.UserId <= 0 {
+		return resterrors.BadRequestError("invalid user id")
+	}
+	if at.ClientId <= 0 {
+		return resterrors.BadRequestError("invalid client id")
+	}
+	if at.Expires <= 0 {
+		return resterrors.BadRequestError("invalid expiry time")
+	}
+	return nil
 }
 
 func (at AccessToken) CheckExpired() bool {
