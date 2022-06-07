@@ -9,10 +9,12 @@ import (
 
 const (
 	queryGetAccessToken = "SELECT access_token, user_id, client_id, expires FROM access_token WHERE access_token=?"
+	queryCreateToken    = "INSERT INTO access_token(access_token, user_id, client_id expires) VALUES (?,?,?,?);"
 )
 
 type DBRepository interface {
 	GetById(string) (*access_token.AccessToken, resterrors.RestErr)
+	Create(access_token.AccessToken) resterrors.RestErr
 }
 
 type dbrepository struct{}
@@ -40,4 +42,15 @@ func (db dbrepository) GetById(id string) (*access_token.AccessToken, resterrors
 		return nil, resterrors.NotFound("Id is not found")
 	}
 	return &result, nil
+}
+
+func (db dbrepository) Create(aT access_token.AccessToken) resterrors.RestErr {
+	session, err := cassandra.GetDBSession()
+	if err != nil {
+		logger.Error("Error while creating DB Session", err)
+		return resterrors.InternalServerError("Errror creating a DB Session", err)
+	}
+	defer session.Close()
+
+	return nil
 }
