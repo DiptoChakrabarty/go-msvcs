@@ -1,7 +1,6 @@
 package cassandra
 
 import (
-	"errors"
 	"os"
 
 	"github.com/DiptoChakrabarty/go-mvcs/logger"
@@ -11,6 +10,7 @@ import (
 
 var (
 	cluster *gocql.ClusterConfig
+	session *gocql.Session
 )
 
 func getenvValue(key string) string {
@@ -25,14 +25,10 @@ func init() {
 	cluster := gocql.NewCluster("127.0.0.1")
 	cluster.Authenticator = gocql.PasswordAuthenticator{Username: getenvValue("USERNAME"), Password: getenvValue("PASSWORD")}
 	cluster.Consistency = gocql.Quorum
-
-}
-
-func GetDBSession() (*gocql.Session, error) {
 	session, err := cluster.CreateSession()
 	if err != nil {
 		logger.Error("Unable to create Cluster session", err)
-		return nil, errors.New("Unable to create session")
+		panic(err)
 	}
 	defer session.Close()
 
@@ -40,7 +36,7 @@ func GetDBSession() (*gocql.Session, error) {
 	err = session.Query("CREATE KEYSPACE IF NOT EXISTS oauth WITH REPLICATION= {'class': 'NetworkTopologyStrategy'};").Exec()
 	if err != nil {
 		logger.Error("Unable to get keyspace", err)
-		return nil, errors.New("Unable to get keyspace")
+		panic(err)
 	}
 	cluster.Keyspace = "oauth"
 
@@ -48,7 +44,10 @@ func GetDBSession() (*gocql.Session, error) {
 	err = session.Query("CREATE TABLE IF NOT EXISTS oauth.users (name text, access_token text, id int), PRIMARY KEY (id));").Exec()
 	if err != nil {
 		logger.Error("Unable to identify table", err)
-		return nil, errors.New("Unable to get table")
+		panic(err)
 	}
-	return session, nil
+}
+
+func GetDBSession() *gocql.Session {
+	return session
 }
