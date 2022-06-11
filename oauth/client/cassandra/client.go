@@ -9,7 +9,6 @@ import (
 )
 
 var (
-	cluster *gocql.ClusterConfig
 	session *gocql.Session
 )
 
