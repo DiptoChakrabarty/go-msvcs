@@ -17,5 +17,6 @@ func main() {
 	TokenHandler := handlers.NewHandler(TokenService)
 
 	router.GET("/oauth/access_token/:access_token_id", TokenHandler.GetById)
+	router.POST("/oauth/access_token/", TokenHandler.Create)
 	router.Run(":3000")
 }
