@@ -34,7 +34,7 @@ func init() {
 	// creating keyspace
 	err = session.Query("CREATE KEYSPACE IF NOT EXISTS oauth WITH REPLICATION= {'class': 'NetworkTopologyStrategy'};").Exec()
 	if err != nil {
-		logger.Error("Unable to get keyspace", err)
+		logger.Error("Unable to create keyspace", err)
 		panic(err)
 	}
 	cluster.Keyspace = "oauth"
