@@ -1,4 +1,4 @@
-package oauth
+package main
 
 import (
 	"github.com/DiptoChakrabarty/go-mvcs/oauth/access_token_service"
