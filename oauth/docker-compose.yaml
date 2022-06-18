@@ -13,7 +13,27 @@ services:
       timeout: 10s
       retries: 10
     environment:
-      - CASSANDRA_SEEDS=cassandra
+      - CASSANDRA_SEEDS=cassandra,cassandra2
+      - CASSANDRA_PASSWORD_SEEDER=yes
+      - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_RPC_ADDRESS=127.0.0.1
+      - CASSANDRA_BROADCAST_ADDRESS=127.0.0.1
+      - CASSANDRA_LISTEN_ADDRESS=127.0.0.1
+      - CASSANDRA_START_RPC=true
+  cassandra2:
+    image: docker.io/bitnami/cassandra:latest
+    ports:
+      - '7000:7000'
+      - '9042:9042'
+    volumes:
+      - 'cassandra_data2:/bitnami'
+    healthcheck:
+      test: [ "CMD", "/opt/bitnami/cassandra/bin/cqlsh", "-u cassandra", "-p cassandra" ,"-e \"describe keyspaces\"" ]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+    environment:
+      - CASSANDRA_SEEDS=cassandra,cassandra2
       - CASSANDRA_PASSWORD_SEEDER=yes
       - CASSANDRA_PASSWORD=cassandra
       - CASSANDRA_RPC_ADDRESS=127.0.0.1
