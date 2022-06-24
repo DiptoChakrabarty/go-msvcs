@@ -37,7 +37,7 @@ func (s *service) GetById(accessTokenID string) (*access_token.AccessToken, rest
 	}
 	accessToken, err := s.repository.GetById(accessTokenID)
 	if err != nil {
-		logger.Error("Unable to validate token while obtaining token", err)
+		logger.Error("unable to validate token while obtaining token", err)
 		return nil, err
 	}
 	return accessToken, nil
@@ -45,7 +45,7 @@ func (s *service) GetById(accessTokenID string) (*access_token.AccessToken, rest
 
 func (s *service) Create(at access_token.AccessToken) resterrors.RestErr {
 	if err := at.ValidateToken(); err != nil {
-		logger.Error("Unable to validate token while creating", err)
+		logger.Error("unable to validate token while creating", err)
 		return err
 	}
 	return s.repository.Create(at)
@@ -53,7 +53,7 @@ func (s *service) Create(at access_token.AccessToken) resterrors.RestErr {
 
 func (s *service) UpdateExpiryTime(at access_token.AccessToken) resterrors.RestErr {
 	if err := at.ValidateToken(); err != nil {
-		logger.Error("Unable to validate token while updating", err)
+		logger.Error("unable to validate token while updating", err)
 		return err
 	}
 	return s.repository.UpdateExpiryTime(at)

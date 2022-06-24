@@ -15,7 +15,7 @@ var (
 func getenvValue(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
-		logger.Error("Unable to load env file", err)
+		logger.Error("unable to load env file", err)
 	}
 	return os.Getenv(key)
 }
@@ -26,7 +26,7 @@ func init() {
 	cluster.Consistency = gocql.Quorum
 	session, err := cluster.CreateSession()
 	if err != nil {
-		logger.Error("Unable to create Cluster session", err)
+		logger.Error("unable to create Cluster session", err)
 		panic(err)
 	}
 	defer session.Close()
@@ -34,7 +34,7 @@ func init() {
 	// creating keyspace
 	err = session.Query("CREATE KEYSPACE IF NOT EXISTS oauth WITH REPLICATION= {'class': 'NetworkTopologyStrategy'};").Exec()
 	if err != nil {
-		logger.Error("Unable to create keyspace", err)
+		logger.Error("unable to create keyspace", err)
 		panic(err)
 	}
 	cluster.Keyspace = "oauth"
@@ -42,7 +42,7 @@ func init() {
 	// creating table
 	err = session.Query("CREATE TABLE IF NOT EXISTS oauth.users (name text, access_token text, id int), PRIMARY KEY (id));").Exec()
 	if err != nil {
-		logger.Error("Unable to identify table", err)
+		logger.Error("unable to identify table", err)
 		panic(err)
 	}
 }

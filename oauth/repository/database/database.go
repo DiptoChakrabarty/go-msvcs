@@ -33,7 +33,7 @@ func (db dbrepository) GetById(id string) (*access_token.AccessToken, resterrors
 		&result.ClientId,
 		&result.Expires,
 	); err != nil {
-		logger.Error("Unable to retreive ID", err)
+		logger.Error("unable to retreive ID", err)
 		return nil, resterrors.NotFound("Id is not found")
 	}
 	return &result, nil
@@ -45,8 +45,8 @@ func (db dbrepository) Create(at access_token.AccessToken) resterrors.RestErr {
 		at.UserId,
 		at.ClientId,
 		at.Expires).Exec(); err != nil {
-		logger.Error("Unable to create the access token", err)
-		return resterrors.InternalServerError("Unable to create access token", err)
+		logger.Error("unable to create the access token", err)
+		return resterrors.InternalServerError("unable to create access token", err)
 	}
 	return nil
 }
@@ -55,8 +55,8 @@ func (db dbrepository) UpdateExpiryTime(at access_token.AccessToken) resterrors.
 	if err := cassandra.GetDBSession().Query(queryUpdateExpiryTime,
 		at.Expires,
 		at.AccessToken).Exec(); err != nil {
-		logger.Error("Unable to update access token expiry time", err)
-		return resterrors.InternalServerError("Unable to update access token expiry time", err)
+		logger.Error("unable to update access token expiry time", err)
+		return resterrors.InternalServerError("unable to update access token expiry time", err)
 	}
 	return nil
 }
